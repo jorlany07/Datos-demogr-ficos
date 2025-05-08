@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jorlany Salas">
+
+<title>Análisis de datos demográficos de paises</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Index_files/libs/quarto-html/quarto.js"></script>
+<script src="Index_files/libs/quarto-html/popper.min.js"></script>
+<script src="Index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="Index_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="Index_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="Index_files/libs/plotly-binding-4.10.4/plotly.js"></script>
+
+<script src="Index_files/libs/typedarray-0.1/typedarray.min.js"></script>
+
+<script src="Index_files/libs/jquery-3.5.1/jquery.min.js"></script>
+
+<link href="Index_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="Index_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+<link href="Index_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+
+<script src="Index_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+<script src="Index_files/libs/plotly-locale-es-2.11.1/es.js"></script>
+
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#carga-de-bibliotecas" id="toc-carga-de-bibliotecas" class="nav-link active" data-scroll-target="#carga-de-bibliotecas">Carga de bibliotecas</a></li>
+  <li><a href="#carga-de-datos" id="toc-carga-de-datos" class="nav-link" data-scroll-target="#carga-de-datos">Carga de datos</a></li>
+  <li><a href="#introducción" id="toc-introducción" class="nav-link" data-scroll-target="#introducción">Introducción</a></li>
+  <li><a href="#relación-entre-pib-per-cápita-y-esperanza-de-vida-al-nacer" id="toc-relación-entre-pib-per-cápita-y-esperanza-de-vida-al-nacer" class="nav-link" data-scroll-target="#relación-entre-pib-per-cápita-y-esperanza-de-vida-al-nacer">Relación entre PIB per cápita y esperanza de vida al nacer</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Análisis de datos demográficos de paises</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor/a</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jorlany Salas </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="carga-de-bibliotecas" class="level1">
+<h1>Carga de bibliotecas</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hrbrthemes)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="carga-de-datos" class="level1">
+<h1>Carga de datos</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carga de los datos de países</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>paises <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://raw.githubusercontent.com/gf0604-procesamientodatosgeograficos/2025-i/refs/heads/main/datos/natural-earth/paises.csv"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="introducción" class="level1">
+<h1>Introducción</h1>
+<p>Este documento contiene visualizaciones de datos socioeconómicos de países y territorios.</p>
+</section>
+<section id="relación-entre-pib-per-cápita-y-esperanza-de-vida-al-nacer" class="level1">
+<h1>Relación entre PIB per cápita y esperanza de vida al nacer</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de dispersión de PIB per cápita vs esperanza de vida al nacer</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>migrafico <span class="ot">&lt;-</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>paises <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> GDP_PC, <span class="at">y =</span> LIFE_EXPECTANCY, <span class="at">color =</span> CONTINENT)) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="fu">aes</span>(</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># datos que se muestran al colocar el ratón sobre un punto</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">paste0</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"PIB per cápita: "</span>, GDP_PC, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Esperanza de vida: "</span>, LIFE_EXPECTANCY, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Pais: "</span>, NAME</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> comma, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)) <span class="sc">+</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"PIB per cápita vs esperanza de vida al nacer"</span>) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"PIB per cápita (USD)"</span>) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Esperanza de vida al nacer (años)"</span>) <span class="sc">+</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Continente"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Datos de todo el mundo"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Fuentes: Natural Earth y Banco Mundial"</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ipsum</span>()</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(migrafico, <span class="at">tooltip =</span> <span class="st">"text"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">config</span>(<span class="at">locale =</span> <span class="st">'es'</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-0bf00a9e2c97bab4c291" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-0bf00a9e2c97bab4c291">{"x":{"data":[{"x":[855.75559251965115,1084.6029144703186,462.99578997604402,1816.5452323719192,411.51452644667944,1089.1560334584349,3499.890800110436,3281.9905171037908,1503.5151089178171,2279.8962477148998,580.70826982844801,4957.2464552440742,6001.389726848146,7685.9268055310458,3317.3948001657841,1305.0199232631039,527.43972871602796,962.78781255955755,621.78801929932797,467.84266577593922,712.70012326561243,3414.2733883890055,339.57136063366482,2276.3167554707197,878.97918158741334,1446.8258072782371,2229.8565622324468,1219.3725849283685,2790.7046894616378,7961.1164141812051,1463.9340989308091,709.48065313858342,3973.9573410982639,503.55601238172807,3894.1583270187175,261.21842960198012,819.9921596268299,794.33753108284657,1117.976650474199,1507.4365115986084,7766.8061782793629,553.86546487312808,786.85608820425466,679.25654443265751,2202.0947169978053,697.06109878485438,3019.2032872271589,1679.2997143422799,8131.3523885939821,777.78052277414633,523.33565708603487,1369.1610862089633,1943.6797857302283,3602.2439015520017],"y":[65.644999999999996,55.567,56.106999999999999,62.055,62.898000000000003,66.781999999999996,56.106999999999999,74.972999999999999,null,63.052999999999997,59.743000000000002,58.058999999999997,61.479999999999997,72.150999999999996,74.263000000000005,61.802999999999997,60.411000000000001,58.984999999999999,61.100000000000001,54.476999999999997,null,62.859000000000002,66.603999999999999,58.915999999999997,59.417000000000002,67.912999999999997,53.633000000000003,59.954000000000001,61.929000000000002,65.912999999999997,59.390999999999998,52.997,77.129000000000005,59.625,56.359999999999999,61.976999999999997,67.129000000000005,63.637999999999998,53.036000000000001,60.957999999999998,65.694000000000003,62.079999999999998,59.765999999999998,61.588000000000001,63.945,59.860999999999997,70.159000000000006,64.691000000000003,61.189999999999998,62.905999999999999,65.230000000000004,63.68,68.793999999999997,74.721999999999994],"text":["PIB per cápita: 855.755592519651<br />Esperanza de vida: 65.645<br />Pais: Ethiopia","PIB per cápita: 1084.60291447032<br />Esperanza de vida: 55.567<br />Pais: S. Sudan","PIB per cápita: 462.995789976044<br />Esperanza de vida: 56.107<br />Pais: Somalia","PIB per cápita: 1816.54523237192<br />Esperanza de vida: 62.055<br />Pais: Kenya","PIB per cápita: 411.514526446679<br />Esperanza de vida: 62.898<br />Pais: Malawi","PIB per cápita: 1089.15603345843<br />Esperanza de vida: 66.782<br />Pais: Tanzania","PIB per cápita: 3499.89080011044<br />Esperanza de vida: 56.107<br />Pais: Somaliland","PIB per cápita: 3281.99051710379<br />Esperanza de vida: 74.973<br />Pais: Morocco","PIB per cápita: 1503.51510891782<br />Esperanza de vida: NA<br />Pais: W. Sahara","PIB per cápita: 2279.8962477149<br />Esperanza de vida: 63.053<br />Pais: Congo","PIB per cápita: 580.708269828448<br />Esperanza de vida: 59.743<br />Pais: Dem. Rep. Congo","PIB per cápita: 4957.24645524407<br />Esperanza de vida: 58.059<br />Pais: Namibia","PIB per cápita: 6001.38972684815<br />Esperanza de vida: 61.48<br />Pais: South Africa","PIB per cápita: 7685.92680553105<br />Esperanza de vida: 72.151<br />Pais: Libya","PIB per cápita: 3317.39480016578<br />Esperanza de vida: 74.263<br />Pais: Tunisia","PIB per cápita: 1305.0199232631<br />Esperanza de vida: 61.803<br />Pais: Zambia","PIB per cápita: 527.439728716028<br />Esperanza de vida: 60.411<br />Pais: Sierra Leone","PIB per cápita: 962.787812559558<br />Esperanza de vida: 58.985<br />Pais: Guinea","PIB per cápita: 621.788019299328<br />Esperanza de vida: 61.1<br />Pais: Liberia","PIB per cápita: 467.842665775939<br />Esperanza de vida: 54.477<br />Pais: Central African Rep.","PIB per cápita: 712.700123265612<br />Esperanza de vida: NA<br />Pais: Sudan","PIB per cápita: 3414.27338838901<br />Esperanza de vida: 62.859<br />Pais: Djibouti","PIB per cápita: 339.571360633665<br />Esperanza de vida: 66.604<br />Pais: Eritrea","PIB per cápita: 2276.31675547072<br />Esperanza de vida: 58.916<br />Pais: Côte d'Ivoire","PIB per cápita: 878.979181587413<br />Esperanza de vida: 59.417<br />Pais: Mali","PIB per cápita: 1446.82580727824<br />Esperanza de vida: 67.913<br />Pais: Senegal","PIB per cápita: 2229.85656223245<br />Esperanza de vida: 53.633<br />Pais: Nigeria","PIB per cápita: 1219.37258492837<br />Esperanza de vida: 59.954<br />Pais: Benin","PIB per cápita: 2790.70468946164<br />Esperanza de vida: 61.929<br />Pais: Angola","PIB per cápita: 7961.11641418121<br />Esperanza de vida: 65.913<br />Pais: Botswana","PIB per cápita: 1463.93409893081<br />Esperanza de vida: 59.391<br />Pais: Zimbabwe","PIB per cápita: 709.480653138583<br />Esperanza de vida: 52.997<br />Pais: Chad","PIB per cápita: 3973.95734109826<br />Esperanza de vida: 77.129<br />Pais: Algeria","PIB per cápita: 503.556012381728<br />Esperanza de vida: 59.625<br />Pais: Mozambique","PIB per cápita: 3894.15832701872<br />Esperanza de vida: 56.36<br />Pais: eSwatini","PIB per cápita: 261.21842960198<br />Esperanza de vida: 61.977<br />Pais: Burundi","PIB per cápita: 819.99215962683<br />Esperanza de vida: 67.129<br />Pais: Rwanda","PIB per cápita: 794.337531082847<br />Esperanza de vida: 63.638<br />Pais: Uganda","PIB per cápita: 1117.9766504742<br />Esperanza de vida: 53.036<br />Pais: Lesotho","PIB per cápita: 1507.43651159861<br />Esperanza de vida: 60.958<br />Pais: Cameroon","PIB per cápita: 7766.80617827936<br />Esperanza de vida: 65.694<br />Pais: Gabon","PIB per cápita: 553.865464873128<br />Esperanza de vida: 62.08<br />Pais: Niger","PIB per cápita: 786.856088204255<br />Esperanza de vida: 59.766<br />Pais: Burkina Faso","PIB per cápita: 679.256544432658<br />Esperanza de vida: 61.588<br />Pais: Togo","PIB per cápita: 2202.09471699781<br />Esperanza de vida: 63.945<br />Pais: Ghana","PIB per cápita: 697.061098784854<br />Esperanza de vida: 59.861<br />Pais: Guinea-Bissau","PIB per cápita: 3019.20328722716<br />Esperanza de vida: 70.159<br />Pais: Egypt","PIB per cápita: 1679.29971434228<br />Esperanza de vida: 64.691<br />Pais: Mauritania","PIB per cápita: 8131.35238859398<br />Esperanza de vida: 61.19<br />Pais: Eq. Guinea","PIB per cápita: 777.780522774146<br />Esperanza de vida: 62.906<br />Pais: Gambia","PIB per cápita: 523.335657086035<br />Esperanza de vida: 65.23<br />Pais: Madagascar","PIB per cápita: 1369.16108620896<br />Esperanza de vida: 63.68<br />Pais: Comoros","PIB per cápita: 1943.67978573023<br />Esperanza de vida: 68.794<br />Pais: São Tomé and Principe","PIB per cápita: 3602.243901552<br />Esperanza de vida: 74.722<br />Pais: Cabo Verde"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"Africa","legendgroup":"Africa","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[200000],"y":[null],"text":"PIB per cápita: 2e+05<br />Esperanza de vida: NA<br />Pais: Antarctica","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(205,150,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(205,150,0,1)"}},"hoveron":"points","name":"Antarctica","legendgroup":"Antarctica","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[4135.5663778228081,11414.195473101425,20814.717477003946,2099.5987439431351,10500.649513928936,29910.458164387273,7583.6021723779859,5789.6437257233174,31846.213987333525,1558.4722623691171,3315.4586865017586,15342.957749026831,1724.8326044909793,9812.3413019277923,870.72034406542286,4339.6202429207542,2715.2734981755425,1643.0977460282454,43103.295635272152,2038.7692357877395,4793.5224643177044,9126.5553604676224,2534.7812351148032,1309.2970310830274,4622.4622861240596,5955.1079180467623,5475.5109474639876,62087.867271501695,23139.77419747939,1284.6978572995699,7806.7282798440374,32000.31946125142,1559.794574203921,31085.77495182155,1407.7973674735065,1855.7382654351488,507.10069782797081,6859.7087657219536,4405.3997280060157,1071.0374567745278,774.33167813836144,11042.944785276071,28000,3485.079513449436,3853.0477457230654,47818.309770829372,40246.87583284705,65233.189955271868,23503.934992797829],"y":[68.25,76.260000000000005,81.888999999999996,67.744,78.587000000000003,82.700000000000003,74.415999999999997,72.299999999999997,82.680487804878098,73.578000000000003,72.228999999999999,73.935000000000002,71.674000000000007,74.439999999999998,71.287999999999997,72.667000000000002,74.579999999999998,69.896000000000001,79.195999999999998,71.587000000000003,73.488,78.474999999999994,68.998999999999995,72.048780487804905,73.372,71.335999999999999,74.555999999999997,81.558999999999997,77.905000000000001,66.430999999999997,79.680000000000007,80.263999999999996,69.055999999999997,74.551000000000002,67.256,73.697999999999993,62.878999999999998,69.409999999999997,74.215000000000003,70.483999999999995,63.719999999999999,81.888999999999996,81.888999999999996,72.186999999999998,76.609999999999999,null,83.996341463414595,82.895121951219494,79.245999999999995],"text":["PIB per cápita: 4135.56637782281<br />Esperanza de vida: 68.25<br />Pais: Indonesia","PIB per cápita: 11414.1954731014<br />Esperanza de vida: 76.26<br />Pais: Malaysia","PIB per cápita: 20814.7174770039<br />Esperanza de vida: 81.889<br />Pais: Cyprus","PIB per cápita: 2099.59874394314<br />Esperanza de vida: 67.744<br />Pais: India","PIB per cápita: 10500.6495139289<br />Esperanza de vida: 78.587<br />Pais: China","PIB per cápita: 29910.4581643873<br />Esperanza de vida: 82.7<br />Pais: Israel","PIB per cápita: 7583.60217237799<br />Esperanza de vida: 74.416<br />Pais: Lebanon","PIB per cápita: 5789.64372572332<br />Esperanza de vida: 72.3<br />Pais: Syria","PIB per cápita: 31846.2139873335<br />Esperanza de vida: 82.6804878048781<br />Pais: South Korea","PIB per cápita: 1558.47226236912<br />Esperanza de vida: 73.578<br />Pais: North Korea","PIB per cápita: 3315.45868650176<br />Esperanza de vida: 72.229<br />Pais: Bhutan","PIB per cápita: 15342.9577490268<br />Esperanza de vida: 73.935<br />Pais: Oman","PIB per cápita: 1724.83260449098<br />Esperanza de vida: 71.674<br />Pais: Uzbekistan","PIB per cápita: 9812.34130192779<br />Esperanza de vida: 74.44<br />Pais: Kazakhstan","PIB per cápita: 870.720344065423<br />Esperanza de vida: 71.288<br />Pais: Tajikistan","PIB per cápita: 4339.62024292075<br />Esperanza de vida: 72.667<br />Pais: Mongolia","PIB per cápita: 2715.27349817554<br />Esperanza de vida: 74.58<br />Pais: Vietnam","PIB per cápita: 1643.09774602825<br />Esperanza de vida: 69.896<br />Pais: Cambodia","PIB per cápita: 43103.2956352722<br />Esperanza de vida: 79.196<br />Pais: United Arab Emirates","PIB per cápita: 2038.76923578774<br />Esperanza de vida: 71.587<br />Pais: Georgia","PIB per cápita: 4793.5224643177<br />Esperanza de vida: 73.488<br />Pais: Azerbaijan","PIB per cápita: 9126.55536046762<br />Esperanza de vida: 78.475<br />Pais: Turkey","PIB per cápita: 2534.7812351148<br />Esperanza de vida: 68.999<br />Pais: Laos","PIB per cápita: 1309.29703108303<br />Esperanza de vida: 72.0487804878049<br />Pais: Kyrgyzstan","PIB per cápita: 4622.46228612406<br />Esperanza de vida: 73.372<br />Pais: Armenia","PIB per cápita: 5955.10791804676<br />Esperanza de vida: 71.336<br />Pais: Iraq","PIB per cápita: 5475.51094746399<br />Esperanza de vida: 74.556<br />Pais: Iran","PIB per cápita: 62087.8672715017<br />Esperanza de vida: 81.559<br />Pais: Qatar","PIB per cápita: 23139.7741974794<br />Esperanza de vida: 77.905<br />Pais: Saudi Arabia","PIB per cápita: 1284.69785729957<br />Esperanza de vida: 66.431<br />Pais: Pakistan","PIB per cápita: 7806.72827984404<br />Esperanza de vida: 79.68<br />Pais: Thailand","PIB per cápita: 32000.3194612514<br />Esperanza de vida: 80.264<br />Pais: Kuwait","PIB per cápita: 1559.79457420392<br />Esperanza de vida: 69.056<br />Pais: Timor-Leste","PIB per cápita: 31085.7749518215<br />Esperanza de vida: 74.551<br />Pais: Brunei","PIB per cápita: 1407.79736747351<br />Esperanza de vida: 67.256<br />Pais: Myanmar","PIB per cápita: 1855.73826543515<br />Esperanza de vida: 73.698<br />Pais: Bangladesh","PIB per cápita: 507.100697827971<br />Esperanza de vida: 62.879<br />Pais: Afghanistan","PIB per cápita: 6859.70876572195<br />Esperanza de vida: 69.41<br />Pais: Turkmenistan","PIB per cápita: 4405.39972800602<br />Esperanza de vida: 74.215<br />Pais: Jordan","PIB per cápita: 1071.03745677453<br />Esperanza de vida: 70.484<br />Pais: Nepal","PIB per cápita: 774.331678138361<br />Esperanza de vida: 63.72<br />Pais: Yemen","PIB per cápita: 11042.9447852761<br />Esperanza de vida: 81.889<br />Pais: N. Cyprus","PIB per cápita: 28000<br />Esperanza de vida: 81.889<br />Pais: Cyprus U.N. Buffer Zone","PIB per cápita: 3485.07951344944<br />Esperanza de vida: 72.187<br />Pais: Philippines","PIB per cápita: 3853.04774572307<br />Esperanza de vida: 76.61<br />Pais: Sri Lanka","PIB per cápita: 47818.3097708294<br />Esperanza de vida: NA<br />Pais: Taiwan","PIB per cápita: 40246.8758328471<br />Esperanza de vida: 83.9963414634146<br />Pais: Japan","PIB per cápita: 65233.1899552719<br />Esperanza de vida: 82.8951219512195<br />Pais: Singapore","PIB per cápita: 23503.9349927978<br />Esperanza de vida: 79.246<br />Pais: Bahrain"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(124,174,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(124,174,0,1)"}},"hoveron":"points","name":"Asia","legendgroup":"Asia","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[42501.354345964275,40371.986126939191,3464.6944456992433,6663.2470167498059,51843.819693736645,19601.743046973566,11774.152374948775,23494.548914126899,46445.242388626903,23723.230236923238,17828.417039202966,75419.566872654221,51614.936162753358,40665.215907612663,114703.11148966925,46420.624073987805,6022.1967410925772,5353.1806385767459,4417.4495387482666,29600.367110911851,60145.800019448106,12919.506705329217,16731.817126169237,19266.152103208005,15692.501573706204,78660.812507437091,19582.46495392729,50137.618652647325,33228.234267363718,81993.676377566342,180856.9399510771,7411.8337359025772,14935.955746773205,25946.07331798811,9828.0316656490959,48877.731836975785,184477.97967354479,40885.639470068185,8908.0057929362829,6108.4519842471982,23252.050238100175,4503.2485625388272,null,66944.726594393229,29819.776267126625],"y":[82.0585365853659,82.229268292682903,68.587926829268298,73.111463414634201,81.714634146341496,75.792682926829301,72.545609756097605,79.0292682926829,80.705609756097601,77.943902439024399,74.580487804878004,82.560975609756099,83.109756097561004,81.187804878048794,83.046341463414606,81.697560975609804,74.424878048780499,76.832999999999998,75.482195121951193,83.082926829268303,81.304878048780495,75.304878048780495,76.017073170731706,77.065853658536597,77.304878048780495,83.056097560975601,80.636585365853705,81.092682926829298,82.900000000000006,83.453658536585394,84.319512195122002,75.482195121951193,77.575609756097606,81.282926829268305,74.360975609756096,null,null,null,76.187804878048794,75.293000000000006,null,68.620999999999995,null,82.170731707317103,82.700000000000003],"text":["PIB per cápita: 42501.3543459643<br />Esperanza de vida: 82.0585365853659<br />Pais: United Kingdom","PIB per cápita: 40371.9861269392<br />Esperanza de vida: 82.2292682926829<br />Pais: France","PIB per cápita: 3464.69444569924<br />Esperanza de vida: 68.5879268292683<br />Pais: Ukraine","PIB per cápita: 6663.24701674981<br />Esperanza de vida: 73.1114634146342<br />Pais: Belarus","PIB per cápita: 51843.8196937366<br />Esperanza de vida: 81.7146341463415<br />Pais: Netherlands","PIB per cápita: 19601.7430469736<br />Esperanza de vida: 75.7926829268293<br />Pais: Lithuania","PIB per cápita: 11774.1523749488<br />Esperanza de vida: 72.5456097560976<br />Pais: Russia","PIB per cápita: 23494.5489141269<br />Esperanza de vida: 79.0292682926829<br />Pais: Czechia","PIB per cápita: 46445.2423886269<br />Esperanza de vida: 80.7056097560976<br />Pais: Germany","PIB per cápita: 23723.2302369232<br />Esperanza de vida: 77.9439024390244<br />Pais: Estonia","PIB per cápita: 17828.417039203<br />Esperanza de vida: 74.580487804878<br />Pais: Latvia","PIB per cápita: 75419.5668726542<br />Esperanza de vida: 82.5609756097561<br />Pais: Norway","PIB per cápita: 51614.9361627534<br />Esperanza de vida: 83.109756097561<br />Pais: Sweden","PIB per cápita: 40665.2159076127<br />Esperanza de vida: 81.1878048780488<br />Pais: Finland","PIB per cápita: 114703.111489669<br />Esperanza de vida: 83.0463414634146<br />Pais: Luxembourg","PIB per cápita: 46420.6240739878<br />Esperanza de vida: 81.6975609756098<br />Pais: Belgium","PIB per cápita: 6022.19674109258<br />Esperanza de vida: 74.4248780487805<br />Pais: North Macedonia","PIB per cápita: 5353.18063857675<br />Esperanza de vida: 76.833<br />Pais: Albania","PIB per cápita: 4417.44953874827<br />Esperanza de vida: 75.4821951219512<br />Pais: Kosovo","PIB per cápita: 29600.3671109119<br />Esperanza de vida: 83.0829268292683<br />Pais: Spain","PIB per cápita: 60145.8000194481<br />Esperanza de vida: 81.3048780487805<br />Pais: Denmark","PIB per cápita: 12919.5067053292<br />Esperanza de vida: 75.3048780487805<br />Pais: Romania","PIB per cápita: 16731.8171261692<br />Esperanza de vida: 76.0170731707317<br />Pais: Hungary","PIB per cápita: 19266.152103208<br />Esperanza de vida: 77.0658536585366<br />Pais: Slovakia","PIB per cápita: 15692.5015737062<br />Esperanza de vida: 77.3048780487805<br />Pais: Poland","PIB per cápita: 78660.8125074371<br />Esperanza de vida: 83.0560975609756<br />Pais: Ireland","PIB per cápita: 19582.4649539273<br />Esperanza de vida: 80.6365853658537<br />Pais: Greece","PIB per cápita: 50137.6186526473<br />Esperanza de vida: 81.0926829268293<br />Pais: Austria","PIB per cápita: 33228.2342673637<br />Esperanza de vida: 82.9<br />Pais: Italy","PIB per cápita: 81993.6763775663<br />Esperanza de vida: 83.4536585365854<br />Pais: Switzerland","PIB per cápita: 180856.939951077<br />Esperanza de vida: 84.319512195122<br />Pais: Liechtenstein","PIB per cápita: 7411.83373590258<br />Esperanza de vida: 75.4821951219512<br />Pais: Serbia","PIB per cápita: 14935.9557467732<br />Esperanza de vida: 77.5756097560976<br />Pais: Croatia","PIB per cápita: 25946.0733179881<br />Esperanza de vida: 81.2829268292683<br />Pais: Slovenia","PIB per cápita: 9828.0316656491<br />Esperanza de vida: 74.3609756097561<br />Pais: Bulgaria","PIB per cápita: 48877.7318369758<br />Esperanza de vida: NA<br />Pais: San Marino","PIB per cápita: 184477.979673545<br />Esperanza de vida: NA<br />Pais: Monaco","PIB per cápita: 40885.6394700682<br />Esperanza de vida: NA<br />Pais: Andorra","PIB per cápita: 8908.00579293628<br />Esperanza de vida: 76.1878048780488<br />Pais: Montenegro","PIB per cápita: 6108.4519842472<br />Esperanza de vida: 75.293<br />Pais: Bosnia and Herz.","PIB per cápita: 23252.0502381002<br />Esperanza de vida: NA<br />Pais: Portugal","PIB per cápita: 4503.24856253883<br />Esperanza de vida: 68.621<br />Pais: Moldova","PIB per cápita: -120000<br />Esperanza de vida: NA<br />Pais: Vatican","PIB per cápita: 66944.7265943932<br />Esperanza de vida: 82.1707317073171<br />Pais: Iceland","PIB per cápita: 29819.7762671266<br />Esperanza de vida: 82.7<br />Pais: Malta"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,190,103,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,190,103,1)"}},"hoveron":"points","name":"Europe","legendgroup":"Europe","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[12243.735142576779,1912.7639102394285,1272.4764289545387,8282.0884484323342,4187.1508609288558,4619.9638569585477,8825.4422757770044,2574.8716129716072,64966.827350410647,46194.708478181878,9946.0296966513088,4813.591800242345,15730.827641701671,34861.688088281357,17397.469341700522,10803.282054944955,7451.0123068297935,18148.244926400141,11608.950161387384,8104.9465240641712,17102.905743528492,19930.347882045651,5582.2396727039741],"y":[77.319999999999993,74.614999999999995,63.728000000000002,74.170000000000002,71.474999999999994,68.674000000000007,78.155000000000001,70.727999999999994,77.434146341463403,81.295609756097605,74.831999999999994,70.962000000000003,76.825999999999993,74.358000000000004,74.707999999999998,75.334999999999994,68.971999999999994,77.706000000000003,71.293999999999997,72.980999999999995,79.236000000000004,72.027000000000001,70.629000000000005],"text":["PIB per cápita: 12243.7351425768<br />Esperanza de vida: 77.32<br />Pais: Costa Rica","PIB per cápita: 1912.76391023943<br />Esperanza de vida: 74.615<br />Pais: Nicaragua","PIB per cápita: 1272.47642895454<br />Esperanza de vida: 63.728<br />Pais: Haiti","PIB per cápita: 8282.08844843233<br />Esperanza de vida: 74.17<br />Pais: Dominican Rep.","PIB per cápita: 4187.15086092886<br />Esperanza de vida: 71.475<br />Pais: El Salvador","PIB per cápita: 4619.96385695855<br />Esperanza de vida: 68.674<br />Pais: Guatemala","PIB per cápita: 8825.442275777<br />Esperanza de vida: 78.155<br />Pais: Cuba","PIB per cápita: 2574.87161297161<br />Esperanza de vida: 70.728<br />Pais: Honduras","PIB per cápita: 64966.8273504106<br />Esperanza de vida: 77.4341463414634<br />Pais: United States of America","PIB per cápita: 46194.7084781819<br />Esperanza de vida: 81.2956097560976<br />Pais: Canada","PIB per cápita: 9946.02969665131<br />Esperanza de vida: 74.832<br />Pais: Mexico","PIB per cápita: 4813.59180024235<br />Esperanza de vida: 70.962<br />Pais: Belize","PIB per cápita: 15730.8276417017<br />Esperanza de vida: 76.826<br />Pais: Panama","PIB per cápita: 34861.6880882814<br />Esperanza de vida: 74.358<br />Pais: Bahamas","PIB per cápita: 17397.4693417005<br />Esperanza de vida: 74.708<br />Pais: Trinidad and Tobago","PIB per cápita: 10803.282054945<br />Esperanza de vida: 75.335<br />Pais: Grenada","PIB per cápita: 7451.01230682979<br />Esperanza de vida: 68.972<br />Pais: St. Vin. and Gren.","PIB per cápita: 18148.2449264001<br />Esperanza de vida: 77.706<br />Pais: Barbados","PIB per cápita: 11608.9501613874<br />Esperanza de vida: 71.294<br />Pais: Saint Lucia","PIB per cápita: 8104.94652406417<br />Esperanza de vida: 72.981<br />Pais: Dominica","PIB per cápita: 17102.9057435285<br />Esperanza de vida: 79.236<br />Pais: Antigua and Barb.","PIB per cápita: 19930.3478820457<br />Esperanza de vida: 72.027<br />Pais: St. Kitts and Nevis","PIB per cápita: 5582.23967270397<br />Esperanza de vida: 70.629<br />Pais: Jamaica"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,191,196,1)"}},"hoveron":"points","name":"North America","legendgroup":"North America","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2829.1581155156573,55053.069575397283,6175.6070264384753,41872.187844134358,1649.57570191997,3759.0787705601201,4899.8028594943253,4322.7446384267641,2372.268494811316,4035.7204190279926,9379.2226373102294,3523.2614330272813,3114.5583929679005,14882.274544646823],"y":[null,83.200000000000003,68.311999999999998,82.760975609756102,67.661000000000001,65.146000000000001,71.269999999999996,72.597999999999999,70.742000000000004,64.853999999999999,64.013999999999996,70.924999999999997,70.492000000000004,null],"text":["PIB per cápita: 2829.15811551566<br />Esperanza de vida: NA<br />Pais: Papua New Guinea","PIB per cápita: 55053.0695753973<br />Esperanza de vida: 83.2<br />Pais: Australia","PIB per cápita: 6175.60702643848<br />Esperanza de vida: 68.312<br />Pais: Fiji","PIB per cápita: 41872.1878441344<br />Esperanza de vida: 82.7609756097561<br />Pais: New Zealand","PIB per cápita: 1649.57570191997<br />Esperanza de vida: 67.661<br />Pais: Kiribati","PIB per cápita: 3759.07877056012<br />Esperanza de vida: 65.146<br />Pais: Marshall Is.","PIB per cápita: 4899.80285949433<br />Esperanza de vida: 71.27<br />Pais: Tonga","PIB per cápita: 4322.74463842676<br />Esperanza de vida: 72.598<br />Pais: Samoa","PIB per cápita: 2372.26849481132<br />Esperanza de vida: 70.742<br />Pais: Solomon Is.","PIB per cápita: 4035.72041902799<br />Esperanza de vida: 64.854<br />Pais: Tuvalu","PIB per cápita: 9379.22263731023<br />Esperanza de vida: 64.014<br />Pais: Nauru","PIB per cápita: 3523.26143302728<br />Esperanza de vida: 70.925<br />Pais: Micronesia","PIB per cápita: 3114.5583929679<br />Esperanza de vida: 70.492<br />Pais: Vanuatu","PIB per cápita: 14882.2745446468<br />Esperanza de vida: NA<br />Pais: Palau"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,169,255,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,169,255,1)"}},"hoveron":"points","name":"Oceania","legendgroup":"Oceania","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[17444.302176696543,11098.900143871706,10626.175951543732],"y":[73.848780487804902,73.514634146341507,80.838999999999999],"text":["PIB per cápita: 17444.3021766965<br />Esperanza de vida: 73.8487804878049<br />Pais: Seychelles","PIB per cápita: 11098.9001438717<br />Esperanza de vida: 73.5146341463415<br />Pais: Mauritius","PIB per cápita: 10626.1759515437<br />Esperanza de vida: 80.839<br />Pais: Maldives"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(199,124,255,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(199,124,255,1)"}},"hoveron":"points","name":"Seven seas (open ocean)","legendgroup":"Seven seas (open ocean)","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[14896.445437688548,3552.0407188333288,6977.694220378904,9912.2778596769767,6359.1938255444529,6608.6161126058105,8717.1860849515197,16189.86323039263,6183.785548492885,6428.656749340671,5414.7581223501111,16915.482274774477],"y":[79.519000000000005,64.927999999999997,73.385000000000005,76.063999999999993,70.289000000000001,65.989000000000004,73.424999999999997,78,77.894000000000005,73.659000000000006,70.474999999999994,71.105000000000004],"text":["PIB per cápita: 14896.4454376885<br />Esperanza de vida: 79.519<br />Pais: Chile","PIB per cápita: 3552.04071883333<br />Esperanza de vida: 64.928<br />Pais: Bolivia","PIB per cápita: 6977.6942203789<br />Esperanza de vida: 73.385<br />Pais: Peru","PIB per cápita: 9912.27785967698<br />Esperanza de vida: 76.064<br />Pais: Argentina","PIB per cápita: 6359.19382554445<br />Esperanza de vida: 70.289<br />Pais: Suriname","PIB per cápita: 6608.61611260581<br />Esperanza de vida: 65.989<br />Pais: Guyana","PIB per cápita: 8717.18608495152<br />Esperanza de vida: 73.425<br />Pais: Brazil","PIB per cápita: 16189.8632303926<br />Esperanza de vida: 78<br />Pais: Uruguay","PIB per cápita: 6183.78554849289<br />Esperanza de vida: 77.894<br />Pais: Ecuador","PIB per cápita: 6428.65674934067<br />Esperanza de vida: 73.659<br />Pais: Colombia","PIB per cápita: 5414.75812235011<br />Esperanza de vida: 70.475<br />Pais: Paraguay","PIB per cápita: 16915.4822747745<br />Esperanza de vida: 71.105<br />Pais: Venezuela"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,97,204,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(255,97,204,1)"}},"hoveron":"points","name":"South America","legendgroup":"South America","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":95.701120797011214,"r":39.850560398505614,"b":86.841012868410132,"l":70.900788709007898},"font":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":15.276048152760483},"title":{"text":"<b> PIB per cápita vs esperanza de vida al nacer <\/b>","font":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":23.910336239103366},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-10000,210000],"tickmode":"array","ticktext":["0","50,000","100,000","150,000","200,000"],"tickvals":[0,49999.999999999993,100000,150000,200000],"categoryorder":"array","categoryarray":["0","50,000","100,000","150,000","200,000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.8190120381901207,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"Arial Narrow","size":15.276048152760483},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(204,204,204,1)","gridwidth":0.265670402656704,"zeroline":false,"anchor":"y","title":{"text":"PIB per cápita (USD)","font":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":11.955168119551683}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[51.430874390243901,85.885637804878101],"tickmode":"array","ticktext":["60","70","80"],"tickvals":[60,70,80],"categoryorder":"array","categoryarray":["60","70","80"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.8190120381901207,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"Arial Narrow","size":15.276048152760483},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(204,204,204,1)","gridwidth":0.26567040265670405,"zeroline":false,"anchor":"x","title":{"text":"Esperanza de vida al nacer (años)","font":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":11.955168119551683}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":12.220838522208389},"title":{"text":"Continente","font":{"color":"rgba(0,0,0,1)","family":"Arial Narrow","size":15.276048152760483}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"locale":"es"},"source":"A","attrs":{"2e4829c96f30":{"x":{},"y":{},"colour":{},"text":{},"type":"scatter"}},"cur_data":"2e4829c96f30","visdat":{"2e4829c96f30":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
